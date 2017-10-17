@@ -50,6 +50,7 @@ check_trip_point_change() {
     trip_type=0
     trip_type_path=0
     $CPU_HEAT_BIN &
+    get_os
     if [ $? -eq 1 ]; then
         cpu_pid=$(ps | grep heat_cpu| awk '{print $1}')
     else
