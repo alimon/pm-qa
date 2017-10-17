@@ -425,7 +425,7 @@ sigtrap() {
 get_os() {
      build_prop_file="\system\build.prop"
 
-     if [ -e "$build_prop_file" ]; then
+     if [ ! -e "$build_prop_file" ]; then
         # for ubuntu
         return 1
      else
