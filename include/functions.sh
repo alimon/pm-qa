@@ -403,6 +403,7 @@ save_frequencies() {
         freq_value=$(cat $CPU_PATH/$cpu/cpufreq/scaling_cur_freq)
         eval $freq_array$index=$freq_value
         eval export $freq_array$index
+        index=$((index + 1))
     done
 }
 
