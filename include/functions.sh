@@ -412,6 +412,7 @@ restore_frequencies() {
     index=0
 
     for cpu in $cpus; do
+   set_governor $cpu userspace
 	oldfreq=$(eval echo \$$freq_array$index)
 	echo $oldfreq > $CPU_PATH/$cpu/cpufreq/scaling_setspeed
 	index=$((index + 1))
