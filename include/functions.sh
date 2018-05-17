@@ -27,7 +27,7 @@
 #     Andy Whitcroft <apw@canonical.com>
 #       - initial suspend/resume functions
 #     Hongbo Zhang <hongbo.zhang@linaro.org>
-#		- updated suspend/resume functions
+#       - updated suspend/resume functions
 #
 
 . ../Switches/Switches.sh
@@ -117,21 +117,19 @@ log_skip() {
 }
 
 for_each_cpu() {
-
     cpu_func=$1
     shift 1
 
     for cpu in $cpus; do
-	INC=0
-	CPU=/$cpu
-	$cpu_func $cpu $@
+        INC=0
+        CPU=/$cpu
+        $cpu_func $cpu $@
     done
 
     return 0
 }
 
 for_each_governor() {
-
     gov_cpu=$1
     gov_func=$2
     cpufreq_dirpath=$CPU_PATH/$gov_cpu/cpufreq
@@ -139,14 +137,13 @@ for_each_governor() {
     shift 2
 
     for governor in $governors; do
-	$gov_func $gov_cpu $governor $@
+        $gov_func $gov_cpu $governor $@
     done
 
     return 0
 }
 
 for_each_frequency() {
-
     freq_cpu=$1
     freq_func=$2
     cpufreq_dirpath=$CPU_PATH/$freq_cpu/cpufreq
@@ -154,14 +151,13 @@ for_each_frequency() {
     shift 2
 
     for frequency in $frequencies; do
-	$freq_func $freq_cpu $frequency $@
+        $freq_func $freq_cpu $frequency $@
     done
 
     return 0
 }
 
 set_governor() {
-
     gov_cpu=$1
     scaling_gov_dirpath=$CPU_PATH/$gov_cpu/cpufreq/scaling_governor
     newgov=$2
@@ -170,7 +166,6 @@ set_governor() {
 }
 
 get_governor() {
-
     gov_cpu=$1
     scaling_gov_dirpath=$CPU_PATH/$gov_cpu/cpufreq/scaling_governor
 
@@ -224,21 +219,20 @@ frequnit() {
 
     ghz_value=$(echo $ghz | awk '{printf "%f", ($1 > 1.0)}')
     if [ "$ghz_value" = "1" ]; then
-	echo $ghz GHz
-	return 0
+        echo $ghz GHz
+        return 0
     fi
 
     mhz_value=$(echo $mhz | awk '{printf "%f", ($1 > 1.0)}')
     if [ "$mhz_value" = "1" ];then
-	echo $mhz MHz
-	return 0
+        echo $mhz MHz
+        return 0
     fi
 
     echo $freq KHz
 }
 
 set_frequency() {
-
     freq_cpu=$1
     cpufreq_dirpath=$CPU_PATH/$freq_cpu/cpufreq
     newfreq=$2
@@ -271,7 +265,7 @@ set_online() {
     current_cpu_path=$CPU_PATH/$current_cpu
 
     if [ "$current_cpu" = "cpu0" ]; then
-	return 0
+        return 0
     fi
 
     echo 1 > $current_cpu_path/online
@@ -282,7 +276,7 @@ set_offline() {
     current_cpu_path=$CPU_PATH/$current_cpu
 
     if [ "$current_cpu" = "cpu0" ]; then
-	return 0
+        return 0
     fi
 
     echo 0 > $current_cpu_path/online
@@ -296,7 +290,6 @@ get_online() {
 }
 
 check() {
-
     check_descr=$1
     check_func=$2
     shift 2;
@@ -305,8 +298,8 @@ check() {
 
     $check_func $@
     if [ $? -ne 0 ]; then
-	log_end "Err"
-	return 1
+        log_end "Err"
+        return 1
     fi
 
     log_end "Ok"
@@ -327,7 +320,7 @@ check_cpufreq_files() {
     shift 1
 
     for i in $@; do
-	check_file $i $cpufreq_files_dir || return 1
+        check_file $i $cpufreq_files_dir || return 1
     done
 
     return 0
@@ -336,7 +329,7 @@ check_cpufreq_files() {
 check_sched_mc_files() {
 
     for i in $@; do
-	check_file $i $CPU_PATH || return 1
+        check_file $i $CPU_PATH || return 1
     done
 
     return 0
@@ -348,32 +341,30 @@ check_topology_files() {
     shift 1
 
     for i in $@; do
-	check_file $i $topology_files_dir || return 1
+        check_file $i $topology_files_dir || return 1
     done
 
     return 0
 }
 
 check_cpuhotplug_files() {
-
     cpuhotplug_files_dir=$CPU_PATH/$1
     shift 1
 
     for i in $@; do
-	if [ `echo $cpuhotplug_files_dir | grep -c "cpu0"` -eq 1 ]; then
-        	if [ $hotplug_allow_cpu0 -eq 0 ]; then
-			continue
-		fi
-	fi
+        if [ `echo $cpuhotplug_files_dir | grep -c "cpu0"` -eq 1 ]; then
+            if [ $hotplug_allow_cpu0 -eq 0 ]; then
+                continue
+            fi
+        fi
 
-	check_file $i $cpuhotplug_files_dir || return 1
+        check_file $i $cpuhotplug_files_dir || return 1
     done
 
     return 0
 }
 
 save_governors() {
-
     index=0
 
     for cpu in $cpus; do
@@ -385,7 +376,6 @@ save_governors() {
 }
 
 restore_governors() {
-
     index=0
 
     for cpu in $cpus; do
@@ -396,7 +386,6 @@ restore_governors() {
 }
 
 save_frequencies() {
-
     index=0
 
     for cpu in $cpus; do
@@ -408,14 +397,13 @@ save_frequencies() {
 }
 
 restore_frequencies() {
-
     index=0
 
     for cpu in $cpus; do
-   set_governor $cpu userspace
-	oldfreq=$(eval echo \$$freq_array$index)
-	echo $oldfreq > $CPU_PATH/$cpu/cpufreq/scaling_setspeed
-	index=$((index + 1))
+        set_governor $cpu userspace
+        oldfreq=$(eval echo \$$freq_array$index)
+        echo $oldfreq > $CPU_PATH/$cpu/cpufreq/scaling_setspeed
+        index=$((index + 1))
     done
 }
 
@@ -452,9 +440,9 @@ is_cpu0_hotplug_allowed() {
     status=$1
 
     if [ $status -eq 1 ]; then
-	return 0
+        return 0
     else
-	return 1
+        return 1
     fi
 }
 
@@ -500,13 +488,13 @@ get_total_trip_point_of_zone() {
     shift 1
     trips=$(ls $zone_path | grep "trip_point_['$MAX_ZONE']_temp")
     for trip in $trips; do
-	count=$((count + 1))
+        count=$((count + 1))
     done
+
     return $count
 }
 
 for_each_trip_point_of_zone() {
-
     zone_path=$THERMAL_PATH/$1
     count=0
     func=$2
@@ -514,14 +502,14 @@ for_each_trip_point_of_zone() {
     shift 2
     trips=$(ls $zone_path | grep "trip_point_['$MAX_ZONE']_temp")
     for trip in $trips; do
-	$func $zone_name $count
-	count=$((count + 1))
+        $func $zone_name $count
+        count=$((count + 1))
     done
+
     return 0
 }
 
 for_each_binding_of_zone() {
-
     zone_path=$THERMAL_PATH/$1
     count=0
     func=$2
@@ -529,8 +517,8 @@ for_each_binding_of_zone() {
     shift 2
     trips=$(ls $zone_path | grep "cdev['$MAX_CDEV']_trip_point")
     for trip in $trips; do
-	$func $zone_name $count
-	count=$((count + 1))
+        $func $zone_name $count
+        count=$((count + 1))
     done
 
     return 0
@@ -583,25 +571,23 @@ validate_trip_level() {
 }
 
 for_each_cooling_device() {
-
     cdev_func=$1
     shift 1
 
     cooling_devices=$(ls $THERMAL_PATH | grep "cooling_device['$MAX_CDEV']")
     if [ "$cooling_devices" = "" ]; then
-	log_skip "no cooling devices"
-	return 0
+        log_skip "no cooling devices"
+        return 0
     fi
 
     for cooling_device in $cooling_devices; do
-	INC=0
-	$cdev_func $cooling_device $@
+        INC=0
+        $cdev_func $cooling_device $@
     done
 
     return 0
 }
 check_scaling_freq() {
-
     before_freq_list=$1
     after_freq_list=$2
     shift 2
@@ -637,15 +623,15 @@ store_scaling_maxfreq() {
 }
 
 get_trip_id() {
-
     trip_name=$1
     shift 1
 
     id1=$(echo $trip_name|cut -c12)
     id2=$(echo $trip_name|cut -c13)
     if [ $id2 != "_" ]; then
-	id1=$(($id2 + 10*$id1))
+        id1=$(($id2 + 10*$id1))
     fi
+
     return $id1
 }
 
@@ -724,7 +710,7 @@ kill_glmark2() {
     fi
 
     if [ "$gpu_pid" -ne 0 ]; then
-	kill -9 $gpu_pid
+        kill -9 $gpu_pid
     fi
 }
 
@@ -757,8 +743,7 @@ restore_thermal_governors() {
     return 0
 }
 
-check_for_thermal_zones()
-{
+check_for_thermal_zones() {
     thermal_zones=$(ls $THERMAL_PATH | grep "thermal_zone['$MAX_ZONE']" 2>/dev/null)
     if [ ! -z "$thermal_zones" ]; then
         return 0
@@ -767,15 +752,13 @@ check_for_thermal_zones()
     fi
 }
 
-check_logdir()
-{
-	if [ ! -f $LOGDIR ]; then
-		mkdir -p $LOGDIR
-	fi
+check_logdir() {
+    if [ ! -f $LOGDIR ]; then
+        mkdir -p $LOGDIR
+    fi
 }
 
-setup_wakeup_timer ()
-{
+setup_wakeup_timer() {
         timeout="$1"
 
         # Request wakeup from the RTC or ACPI alarm timers.  Set the timeout
@@ -798,8 +781,7 @@ setup_wakeup_timer ()
         exit 1
 }
 
-suspend_system ()
-{
+suspend_system() {
         if [ "$dry" -eq 1 ]; then
                 echo "DRY-RUN: suspend machine for $timer_sleep"
                 sleep 1
@@ -850,7 +832,8 @@ suspend_system ()
                         break;
                 fi
                 sleep 1
-		done
+        done
+
         echo "^---" >>"$LOGFILE"
         rm -f "$LOGFILE.dmesg"*
         if [ "$retry" -eq 0 ]; then
@@ -859,20 +842,17 @@ suspend_system ()
         fi
 }
 
-ECHO ()
-{
+ECHO() {
         echo "$@" | tee -a "$LOGFILE"
 }
 
-enable_trace()
-{
+enable_trace() {
         if [ -w /sys/power/pm_trace ]; then
                 echo 1 > '/sys/power/pm_trace'
         fi
 }
 
-disable_trace()
-{
+disable_trace() {
         if [ -w /sys/power/pm_trace ]; then
                 echo 0 > '/sys/power/pm_trace'
         fi
@@ -880,27 +860,24 @@ disable_trace()
 
 trace_state=-1
 
-save_trace()
-{
+save_trace() {
         if [ -r /sys/power/pm_trace ]; then
                 trace_state=`cat /sys/power/pm_trace`
         fi
 }
 
-restore_trace()
-{
+restore_trace() {
         if [ "$trace_state" -ne -1 -a -w /sys/power/pm_trace ]; then
                 echo "$trace_state" > '/sys/power/pm_trace'
         fi
 }
 
-battery_count()
-{
+battery_count() {
         cat /proc/acpi/battery/*/state 2>/dev/null | \
         awk '
                 BEGIN                   { total = 0 }
                 /present:.*yes/         { total += 1 }
-				END                     { print total }
+                END                     { print total }
         '
 }
 
@@ -918,24 +895,21 @@ ac_needed=-1
 ac_is=-1
 ac_becomes=-1
 
-ac_required()
-{
+ac_required() {
         ac_check
 
         ac_needed="$1"
         ac_becomes="$1"
 }
 
-ac_transitions()
-{
+ac_transitions() {
         ac_check
 
         ac_needed="$1"
         ac_becomes="$2"
 }
 
-ac_online()
-{
+ac_online() {
         cat /proc/acpi/ac_adapter/*/state 2>/dev/null | \
         awk '
                 BEGIN                   { online = 0; offline = 0 }
@@ -946,15 +920,14 @@ ac_online()
                                                         print "1"
                                                 } else if (offline) {
                                                         print "0"
-												} else {
+                                                } else {
                                                         print "-1"
                                                 }
                                         }
         '
 }
 
-ac_check()
-{
+ac_check() {
         ac_current=`ac_online`
 
         if [ "$ac_becomes" -ne -1 -a "$ac_current" -ne -1 -a \
@@ -969,8 +942,7 @@ phase=0
 phase_first=1
 phase_interactive=1
 
-phase()
-{
+phase() {
         phase=$((phase + 1))
 
         if [ "$ac_needed" -ne "$ac_is" ]; then
