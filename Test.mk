@@ -32,7 +32,8 @@ EXEC=$(SRC:%.c=%)
 check: build_utils run_tests
 
 build_utils:
-	gcc ../utils/uevent_reader.c -o ../utils/uevent_reader
+	$(CC) ../utils/uevent_reader.c -o ../utils/uevent_reader
+	$(CC) ../utils/cpucycle.c -o ../utils/cpucycle
 
 SANITY_STATUS:= $(shell if test $(SNT) && test -f $(SNT); then \
 		./$(SNT); if test "$$?" -eq 0; then echo 0; else \
