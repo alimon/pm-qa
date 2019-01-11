@@ -16,6 +16,10 @@ Commands
 
 	make -C cpufreq check
 
+- If you want to install the pm-qa suite somewhere (default prefix is
+  /opt/pm-qa), invoke:
+
+	make install DESTDIR=<destination_directory>
 
 Test Specifications
 ===================

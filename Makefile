@@ -22,6 +22,15 @@
 #       - initial API and implementation
 #
 hotplug_allow_cpu0?=0
+prefix := /opt/pm-qa
+SRC := $(wildcard utils/*.c) $(wildcard cpuidle/*.c)
+EXEC=$(SRC:%.c=%)
+
+# All directories that need to be created during installation.
+SUBDIRS := $(wildcard */.)
+
+# All files that need to be installed.
+INSTALL_FILES := $(wildcard */*.sh */*.txt) $(EXEC)
 
 # Build all the utils required by the tests.
 all:
@@ -49,3 +58,15 @@ recheck: uncheck check
 clean:
 	@(cd utils; $(MAKE) clean)
 
+# Copy all the required directories and files to the installation
+# directory.
+install: all
+	@echo "Installing files to $(DESTDIR)/$(prefix)"
+
+	@(for dir in $(SUBDIRS); do		\
+	  mkdir -p $(DESTDIR)$(prefix)/$$dir;	\
+	done;)
+
+	@(for file in $(INSTALL_FILES); do	    \
+	  cp -a $$file $(DESTDIR)$(prefix)/$$file; \
+	done;)
