@@ -37,7 +37,7 @@ EXEC=$(SRC:%.c=%)
 build_utils: $(EXEC)
 
 SANITY_STATUS:= $(shell if test $(SNT) && test -f $(SNT); then \
-		./$(SNT); if test "$$?" -eq 0; then echo 0; else \
+		sudo ./$(SNT); if test "$$?" -eq 0; then echo 0; else \
 		echo 1; fi; else echo 1; fi)
 
 ifeq "$(SANITY_STATUS)" "1"
@@ -49,7 +49,7 @@ run_tests: uncheck $(EXEC) $(LOG)
 	@echo -n "### "; cat $(<:.sh=.txt);
 	@echo -n "### "; grep "URL :" ./$< | awk '/http/{print $$NF}'
 	@echo "###"
-	-@./$< 2> $@
+	-@sudo ./$< 2> $@
 else
 run_tests:
 	./$(SNT)
