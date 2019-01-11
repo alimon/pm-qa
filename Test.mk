@@ -26,14 +26,15 @@ TST=$(sort $(wildcard *[!{sanity}].sh))
 LOG=$(TST:.sh=.log)
 CFLAGS?=-g -Wall -pthread
 CC?=gcc
-SRC=$(wildcard *.c)
+
+# All utils' source files.
+SRC=$(wildcard ../utils/*.c) $(wildcard ../cpuidle/*.c)
+
+# All executable files built from the utils' source files.
 EXEC=$(SRC:%.c=%)
 
-check: build_utils run_tests
-
-build_utils:
-	$(CC) ../utils/uevent_reader.c -o ../utils/uevent_reader
-	$(CC) ../utils/cpucycle.c -o ../utils/cpucycle
+# Build the utils and run the tests.
+build_utils: $(EXEC)
 
 SANITY_STATUS:= $(shell if test $(SNT) && test -f $(SNT); then \
 		./$(SNT); if test "$$?" -eq 0; then echo 0; else \
@@ -55,8 +56,14 @@ run_tests:
 #	@cat $(<:.sh=.txt)
 endif
 
+# Target for building all the utils we need, from sources.
+$(EXEC): $(SRC)
+	$(CC) $(CFLAGS) $@.c -o $@
+
 clean:
 	rm -f *.o $(EXEC)
+
+check: build_utils run_tests
 
 uncheck:
 	-@$(shell test ! -z "$(LOG)" && rm -f $(LOG))

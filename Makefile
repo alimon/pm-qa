@@ -22,6 +22,8 @@
 #       - initial API and implementation
 #
 hotplug_allow_cpu0?=0
+
+# Build all the utils required by the tests.
 all:
 	@(cd utils; $(MAKE))
 

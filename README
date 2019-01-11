@@ -1,5 +1,9 @@
 Commands
 ========
+- If you just want to build the supporting utils for the pm-qa tests, invoke:
+
+	make
+
 - In order to run the tests, invoke as root:
 
 	make check
