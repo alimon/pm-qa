@@ -24,7 +24,14 @@
 SNT=$(wildcard *sanity.sh)
 TST=$(sort $(wildcard *[!{sanity}].sh))
 LOG=$(TST:.sh=.log)
-CFLAGS?=-g -Wall -pthread
+
+# Default flags passed to the compiler.
+CFLAGS?=-g -Wall
+
+# Required compiler flags to build the utils.
+FLAGS?=-pthread
+
+# Default compiler to build the utils.
 CC?=gcc
 
 # All utils' source files.
@@ -58,7 +65,7 @@ endif
 
 # Target for building all the utils we need, from sources.
 $(EXEC): $(SRC)
-	$(CC) $(CFLAGS) $@.c -o $@
+	$(CC) $(CFLAGS) $(FLAGS) $@.c -o $@
 
 clean:
 	rm -f *.o $(EXEC)
