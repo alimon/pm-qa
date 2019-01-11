@@ -40,6 +40,8 @@ SRC=$(wildcard ../utils/*.c) $(wildcard ../cpuidle/*.c)
 # All executable files built from the utils' source files.
 EXEC=$(SRC:%.c=%)
 
+.PHONY: build_utils check clean recheck run_tests uncheck
+
 # Build the utils and run the tests.
 build_utils: $(EXEC)
 

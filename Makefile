@@ -32,6 +32,8 @@ SUBDIRS := $(wildcard */.)
 # All files that need to be installed.
 INSTALL_FILES := $(wildcard */*.sh */*.txt) $(EXEC)
 
+.PHONY: all check clean install recheck uncheck
+
 # Build all the utils required by the tests.
 all:
 	@(cd utils; $(MAKE))
