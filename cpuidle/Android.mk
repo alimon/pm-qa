@@ -23,6 +23,7 @@ LOCAL_MODULE := cpuidle_killer
 systemtarball: cpuidle_killer
 systemimage: cpuidle_killer
 LOCAL_SRC_FILES:= cpuidle_killer.c
+LOCAL_CFLAGS += -Wno-error
 LOCAL_SHARED_LIBRARIES := libcutils libc
 LOCAL_MODULE_TAGS := tests
 LOCAL_MODULE_PATH := $(TARGET_OUT_EXECUTABLES)/pm-qa/$(module_name)

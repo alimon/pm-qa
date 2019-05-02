@@ -11,6 +11,7 @@ define $(module_name)_etc_add_executable
     systemtarball: $1
     systemimage: $1
     LOCAL_SRC_FILES := $1.c
+    LOCAL_CFLAGS += -Wno-error
     LOCAL_MODULE_PATH := $(TARGET_OUT_EXECUTABLES)/pm-qa/$(module_name)
     include $(BUILD_EXECUTABLE)
 endef
