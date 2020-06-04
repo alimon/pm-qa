@@ -686,7 +686,7 @@ start_glmark2() {
         $GPU_HEAT_BIN &
         gpu_pid=$(pidof $GPU_HEAT_BIN)
         # Starting X application from serial console needs this
-        if [ -z "$gpu_pid" ]; then
+        if [ -z "$gpu_pid" ] && [ -f "/etc/lightdm/lightdm.conf" ]; then
             cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.bk
             echo "autologin-user=root" >> /etc/lightdm/lightdm.conf
             export DISPLAY=localhost:0.0
@@ -696,8 +696,13 @@ start_glmark2() {
             $GPU_HEAT_BIN &
             gpu_pid=$(pidof $GPU_HEAT_BIN)
         fi
-        test -z "$gpu_pid" && cpu_pid=0
-        echo "start gpu heat binary $gpu_pid"
+
+        if [ -z "$gpu_pid" ]; then
+            gpu_pid=0
+            echo "failed to start gpu heat binary"
+        else
+            echo "start gpu heat binary $gpu_pid"
+        fi
     else
         echo "glmark2 not found." 1>&2
     fi
