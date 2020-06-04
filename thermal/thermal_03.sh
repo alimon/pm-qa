@@ -28,10 +28,10 @@
 . ../include/functions.sh
 
 CPU_HEAT_BIN=../utils/heat_cpu
-cpu_pid=0
+cpu_pid=""
 
 heater_kill() {
-    if [ $cpu_pid -ne 0 ]; then
+    if [ "$cpu_pid" ]; then
 	kill -9 $cpu_pid
     fi
     kill_glmark2
@@ -51,9 +51,11 @@ check_temperature_change() {
     else
         cpu_pid=$(ps | grep heat_cpu| awk '{print $2}')
     fi
-    test -z $cpu_pid && cpu_pid=0
-    check "start cpu heat binary" "test $cpu_pid -ne 0"
-    test $cpu_pid -eq 0 && return
+    if [ -z "$cpu_pid" ]; then
+        echo "failed to start cpu heat binary"
+        return
+    fi
+    echo "start cpu heat binary"
 
     start_glmark2
 
